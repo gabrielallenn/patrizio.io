@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Patrizio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    header.navbar {
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 30px 35px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .navbar-menu {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .navbar-left,
+    .navbar-right {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+    .navbar-logo img {
+      max-height: 50px; /* Tamaño ideal para logos en headers */
+      object-fit: contain;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #321fc5;
+      font-weight: 300; /* Más delgado */
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+
+    .navbar a:hover {
+      color: #FF69B4;
+    }
+
+    .navbar-logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #7A2E9E;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      white-space: nowrap;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .menu-toggle div {
+      width: 25px;
+      height: 3px;
+      background-color: #333;
+      margin: 4px 0;
+    }
+
+    /* Contenedor principal de la imagen con el texto superpuesto */
+    .imagen_ppal {
+      position: relative; /* Es crucial para posicionar elementos internos */
+      width: 100%;
+      height: 700px;
+      overflow: hidden; /* Oculta cualquier contenido que se desborde */
+      display: flex; /* Usamos flexbox para centrar o alinear el contenido dentro */
+      align-items: center; /* Centra verticalmente el contenido */
+      justify-content: flex-start; /* Alinea el contenido a la izquierda */
+    }
+
+    .imagen_ppal img {
+      width: 100%;
+      height: 100%; /* La imagen toma la altura completa del contenedor */
+      object-fit: cover;
+      display: block;
+      position: absolute; /* Permite que el texto se superponga */
+      top: 0;
+      left: 0;
+      z-index: 1; /* Asegura que la imagen esté detrás del texto */
+    }
+
+    /* Estilos para el nuevo contenido DENTRO de la imagen */
+    .hero-content-overlay {
+      position: relative; /* Mantiene el flujo normal dentro de imagen_ppal */
+      z-index: 2; /* Asegura que el contenido esté por encima de la imagen */
+      padding-left: 5%; /* Espacio a la izquierda del contenido */
+      width: 100%; /* Para que ocupe el ancho y se centre bien el texto */
+      text-align: left; /* Alinea el texto a la izquierda */
+      max-width: 600px; /* Limita el ancho del texto para mejor legibilidad */
+      margin: 0 0 0 5%; /* Centra el bloque de contenido y le da margen a la izquierda */
+    }
+
+    .hero-content-overlay h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 3.5em; /* Tamaño más grande para impacto */
+      color: white; /* Color blanco para contraste con la imagen */
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* Sombra para mejor lectura */
+      margin-bottom: 10px;
+      line-height: 1.1; /* Espacio entre líneas */
+    }
+
+    .hero-content-overlay p {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.4em;
+      color: white; /* Color blanco para contraste */
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.7); /* Sombra para mejor lectura */
+      margin-bottom: 30px;
+      max-width: 80%; /* Limita el ancho del párrafo */
+    }
+
+    .hero-button {
+      background-color: #FF69B4; /* Rosado */
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      display: inline-block; /* Para que el padding y márgenes funcionen correctamente */
+    }
+
+    .hero-button:hover {
+      background-color: #e05e9e; /* Un tono un poco más oscuro al pasar el mouse */
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .navbar-menu {
+        flex-direction: column;
+        display: none;
+        margin-top: 10px;
+      }
+
+      .navbar-menu.active {
+        display: flex;
+      }
+
+      .navbar-left,
+      .navbar-right {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .navbar-logo {
+        position: static;
+        transform: none;
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      /* Ajustes para el contenido de la imagen en móviles */
+      .hero-content-overlay {
+        padding-left: 5%;
+        padding-right: 5%;
+        margin: 0; /* Elimina el margen a la izquierda para mejor adaptación */
+        text-align: center; /* Centra el texto en móviles para mejor visualización */
+      }
+
+      .hero-content-overlay h1 {
+        font-size: 2.5em; /* Reduce el tamaño en móviles */
+      }
+
+      .hero-content-overlay p {
+        font-size: 1em; /* Reduce el tamaño en móviles */
+        max-width: 100%; /* Ocupa todo el ancho disponible */
+      }
+    }
+
+    .productos h3 {
+      font-family: 'poppins', cursive, sans-serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #7A2E9E;
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+    .productos h3:hover {
+      color: #FF69B4;
+      cursor: pointer;
+    }
+
+    /* Estilos para el contenedor de todas las cards */
+.product-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsivo: 280px mínimo, columnas flexibles */
+    gap: 30px; /* Espacio entre las cards */
+    padding: 50px 20px; /* Padding general del contenedor */
+    max-width: 1200px; /* Ancho máximo para centrar el contenido */
+    margin: 40px auto; /* Centra el contenedor y le da margen vertical */
+    justify-content: center; /* Centra las cards si no llenan la fila */
+}
+
+/* Estilos para cada card individual */
+.product-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+    overflow: hidden; /* Asegura que el contenido no se salga de los bordes redondeados */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px); /* Pequeño efecto al pasar el mouse */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra más fuerte al pasar el mouse */
+}
+
+.product-card img {
+    width: 100%; /* La imagen ocupa todo el ancho de la card */
+    height: 250px; /* Altura fija para las imágenes de los productos */
+    object-fit: cover; /* Recorte inteligente para las imágenes */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-content {
+    padding: 20px;
+    width: 100%; /* Asegura que el padding afecte todo el contenido */
+}
+
+.card-content h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.card-content .price {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3em;
+    color: #7A2E9E; /* Color púrpura similar a tu logo */
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.buy-button {
+    background-color: #FF69B4; /* Rosado */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px; /* Bordes más redondeados para un look suave */
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-transform: uppercase; /* Texto en mayúsculas para el botón */
+    letter-spacing: 1px;
+}
+
+.buy-button:hover {
+    background-color: #e05e9e; /* Un tono un poco más oscuro al pasar el mouse */
+    transform: translateY(-2px); /* Pequeño efecto de "levantar" */
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+    .product-cards-container {
+        grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+        padding: 30px 15px;
+    }
+
+    .product-card img {
+        height: 200px; /* Ajusta la altura de la imagen en móviles */
+    }
+
+    .card-content h3 {
+        font-size: 1.3em;
+    }
+
+    .card-content .price {
+        font-size: 1.1em;
+    }
+
+    .buy-button {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+}
+.seg  {
+  text-align: center;
+}
+
+    /* Estilos para el Footer */
+footer {
+    background-color: white;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); /* Sombra hacia arriba para separar */
+    margin-top: 50px; /* Espacio para separar del contenido anterior */
+    font-family: 'Poppins', sans-serif;
+    color: #555;
+    position: relative; /* Necesario para la sombra */
+    z-index: 1; /* Asegura que la sombra se vea bien */
+}
+
+footer img {
+    width: 80px; /* Tamaño del logo */
+    height: 80px;
+    border-radius: 50%; /* **Hace el logo redondo** */
+    object-fit: contain; /* Asegura que la imagen se ajuste bien dentro del círculo */
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Pequeña sombra para el logo */
+}
+
+footer p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+footer p:last-of-type { /* Estilo específico para el texto del desarrollador */
+    margin-top: 15px;
+    font-size: 0.85em;
+    color: #777;
+}
+
+footer a {
+    color: #321fc5; /* Color similar al de tus enlaces de navegación */
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #FF69B4; /* Color rosado al pasar el mouse */
+    text-decoration: underline;
+}
+
+/* Responsive para el footer */
+@media (max-width: 768px) {
+    footer {
+        padding: 20px 15px;
+    }
+
+    footer img {
+        width: 60px;
+        height: 60px;
+    }
+
+    footer p {
+        font-size: 0.8em;
+    }
+}
+
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <nav class="navbar-container">
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="navbar-logo"><img src="img/patricio.png" alt=""></div>
+    <div class="navbar-menu" id="navbarMenu">
+      <ul class="navbar-left">
+        <li><a href="#">FRANELAS</a></li>
+        <li><a href="#">GORRAS</a></li>
+        <li><a href="#">CHEMISES</a></li>
+        <li><a href="#">PANTALONES</a></li>
+      </ul>
+      <ul class="navbar-right">
+        <li><a href="#">SWEATER</a></li>
+        <li><a href="#">SHORTS</a></li>
+        <li><a href="#">CUADERNOS</a></li>
+        <li><a href="#">GENERAL</a></li>
+        <li><a href="#"><img src="https://img.icons8.com/ios-glyphs/30/000000/instagram-new.png" alt="Instagram" class="icon" /></a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<div class="imagen_ppal">
+    <img src="img/Patricios3.jpg" alt="">
+    <div class="hero-content-overlay">
+        <h1>Fondo Patrizio</h1>
+        <p>Vestir como en el Fondo de Bikini</p>
+        <a href="#" class="hero-button">Vamos</a>
+    </div>
+</div>
+
+<div class="productos">
+    <h3> Nuestros Productos</h3>
+    <center><p> "¿Es la mayonesa un instrumento?"</p></center>
+</div>
+
+
+    <div class="product-cards-container">
+    <div class="product-card">
+        <img src="catalogo/franela.jpg" alt="Nombre del Producto 1">
+        <div class="card-content">
+            <h3>Franela Patrizio Épica</h3>
+            <p class="price">$25.99</p>
+            <button class="buy-button">Llevar</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="catalogo/bolso.jpg" alt="Nombre del Producto 2">
+        <div class="card-content">
+            <h3>Bolso Estelar Patrizio</h3>
+            <p class="price">$15.50</p>
+            <button class="buy-button">Llevar</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="catalogo/cuaderno.jpeg" alt="Nombre del Producto 3">
+        <div class="card-content">
+            <h3>Cuaderno de Aventuras</h3>
+            <p class="price">$12.00</p>
+            <button class="buy-button">Llevar</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="catalogo/shorts.jpg" alt="Nombre del Producto 4">
+        <div class="card-content">
+            <h3>Short de Verano Patrizio</h3>
+            <p class="price">$20.75</p>
+            <button class="buy-button">Llevar</button>
+        </div>
+    </div>
+        <div class="product-card">
+        <img src="catalogo/sweater.webp" alt="Nombre del Producto 4">
+        <div class="card-content">
+            <h3>Sweater de Verano Patrizio</h3>
+            <p class="price">$20.75</p>
+            <button class="buy-button">Llevar</button>
+        </div>
+    </div>
+     <div class="product-card">
+        <img src="catalogo/gorra.webp" alt="Nombre del Producto 4">
+        <div class="card-content">
+            <h3>gorra de Verano Patrizio</h3>
+            <p class="price">$20.75</p>
+            <button class="buy-button">Llevar</button>
+        </div>
+    </div>
+
+</div>
+    <div class="seg">
+    <h4>Ver mas <br><a href="">1</a> <a href="">2</a></h4>
+    </div>
+  
+<footer>
+  <img src="img/patrizio.jpg" alt="">
+  <p>  Patrizio Corp LLC, Miami USA </p>
+  <p>Desarrollado por <a href="behance.net/Gabrielallenn">Gabriel Allen</a></p>
+
+</footer>
+
+
+
+
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById("navbarMenu");
+    menu.classList.toggle("active");
+  }
+</script>
+
+</body>
+</html>
